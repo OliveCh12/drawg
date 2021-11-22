@@ -1,34 +1,39 @@
 import React from "react";
 
-interface Props {}
+interface Props {
+  handleChange: any;
+}
 
 const Grid = (props: Props) => {
   return (
     <div className="grid">
       <div className="grid__cell">
-        <select name="" id="">
-          <option value="cat">Cat</option>
-          <option value="hamster">Hamster</option>
-          <option value="parrot">Parrot</option>
+        <select name="type" onChange={props.handleChange}>
+          <option value="△">△</option>
+          <option value="□">□</option>
+          <option value="○">○</option>
+          <option value="□/○">□/○</option>
+          <option value="△/□">△/□</option>
         </select>
       </div>
       <div className="grid__cell">
-        <select name="" id="">
-          <option value="cat">🐲</option>
-          <option value="hamster">Hamster</option>
-          <option value="parrot">Parrot</option>
+        <select name="note" disabled={false} onChange={props.handleChange}>
+          <option value="" className="empty"></option>
+          <option value="🐲">🐲</option>
+          <option value="✅">✅</option>
+          <option value="❌">❌</option>
         </select>
       </div>
       <div className="grid__cell">
-        <select name="" id="">
-        <option value="0">0</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
+        <select name="level" onChange={props.handleChange}>
+          <option value="0">0</option>
+          <option value="|">|</option>
+          <option value="||">||</option>
+          <option value="|||">|||</option>
         </select>
       </div>
       <div className="grid__cell">
-        <select name="" id="">
+        <select name="rythme" onChange={props.handleChange}>
           <option value="S">S</option>
           <option value="M">M</option>
           <option value="F">F</option>

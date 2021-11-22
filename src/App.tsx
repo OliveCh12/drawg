@@ -1,126 +1,137 @@
 import React, { useState } from "react";
-import "./App.scss";
+import { produce } from "immer";
+import { AnimatePresence } from "framer-motion";
 
-import Grid from "./components/Grid";
+import Item from "./components/Item";
+import "./App.scss";
 
 function App() {
   const [exos, setExos] = useState([
     {
       title: "Spantin",
-      time: 30,
+      type: "",
+      cardType: "Exos",
+      level: "2",
+      rythme: "S",
+      note: "",
       sections: [
-        { name: "Photos", repeat: 3, comment: "This is a comment", time: 90 },
+        {
+          name: "Photos",
+          repeat: 3,
+          comment: "Dessiner un parapluie",
+          time: 90,
+        },
+        {
+          name: "Photos",
+          repeat: 3,
+          comment: "Aménager le calendrier",
+          time: 30,
+        },
       ],
     },
     {
       title: "Piloche",
-      time: 80,
-      sections: [
-        { name: "Depoch", repeat: 3, comment: "This is a comment", time: 90 },
-      ],
+      cardType: "Cours",
+      type: "",
+      level: "2",
+      rythme: "S",
+      note: "",
+      sections: [{ name: "Depoch", repeat: 3, time: 90 }],
     },
   ]);
 
   // Handle input to ge ta simple string
-  function handleInputChange(event: any) {
-    const value = event.target.value;
-    // const currentExos = [...exos]
+  function handleInputChange(
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    index: number
+  ): void {
+    let field = event.target.name;
 
-    console.log(event.target.name)
-
-
-    // console.log(currentExos[index]);
-    // setState({ ...state, [event.target.name]: value });
+    setExos((currentExos) =>
+      produce(currentExos, (v: any) => {
+        v[index][field] = event.target.value;
+      })
+    );
   }
 
-  function addSection(index: number) {
-    const newSection = [...exos];
-    newSection[index].sections.push({
-      name: "",
-      repeat: 0,
-      comment: "",
-      time: 0,
-    });
-    setExos(newSection);
+
+  // Add Exercice
+  function addExercice() {
+    if (exos.length >= 10) {
+      alert("You can only have tree exercices");
+    } else {
+      setExos([
+        ...exos,
+        {
+          title: "",
+          cardType: "",
+          type: "",
+          level: "",
+          rythme: "",
+          note: "",
+          sections: [],
+        },
+      ]);
+    }
   }
 
-  function removeSection(index: number) {
-    console.log(index);
-  }
-
-  function addExercice(event: any) {
-    setExos([
-      ...exos,
-      {
-        title: "",
-        time: 0,
-        sections: [{ name: "", repeat: 0, comment: "", time: 0 }],
-      },
-    ]);
-
-    console.log(exos);
-  }
-
+  // Remove Exercice at index
   function removeExercice(index: number) {
-    setExos(exos.slice(index, 1));
+    setExos(exos.slice(0, index).concat(exos.slice(index + 1, exos.length)));
   }
 
+  // Add new section to exercice
+  function handleAddSection(data: any, index: number) {
+    Object.preventExtensions(exos);
+    let current = [...exos];
+    current[index].sections.push(data);
+    setExos(current);
+  }
+
+  //Remove section from exercice
+  function handleRemoveSection(index: number) {
+    let current = [...exos]
+    current[index].sections.slice(0, 1);
+
+    console.log(current)
+
+    setExos(current)
+  }
   return (
     <div className="App">
       <div className="exos">
-        {exos.map((exo: any, index: number) => (
-          <div className="exo" key={index}>
-            <span>⏱️ {exo.time} min</span>
-            <span className="exo__index">Exo {index + 1}</span>
-            <button onClick={() => removeExercice(index)}>Remove</button>
-            <input
-              className="exo__title"
-              type="text"
-              name="title"
-              placeholder="Titre"
-              value={exo.title}
-              onChange={handleInputChange}
+        <AnimatePresence>
+          {exos.map((exo: any, index: number) => (
+            <Item
+              key={index}
+              index={index}
+              title={exo.title}
+              cardType={exo.cardType}
+              time={exo.time}
+              sections={exo.sections}
+              handleChange={(e: any) => handleInputChange(e, index)}
+              handleSection={(data: any) => handleAddSection(data, index)}
+              removeSection={(indexSection: number) => handleRemoveSection(index)}
+              removeExercice={() => removeExercice(index)}
             />
-            <Grid />
-            {exos[index].sections.map((section: any, index: number) => (
-              <>
-                <div className="exo__inputs">
-                  <input
-                    name="name"
-                    onChange={handleInputChange}
-                    type="text"
-                    value={section.name}
-                    placeholder="Name"
-                  />
-                  <input
-                    name="repeat"
-                    onChange={handleInputChange}
-                    type="number"
-                    value={section.repeat}
-                    placeholder="Nombre"
-                  />
-                  <input
-                    name="comment"
-                    onChange={handleInputChange}
-                    type="text"
-                    value={section.comment}
-                    placeholder="Commentaire"
-                  />
-                  <input name="time" onChange={handleInputChange} type="time" />
-                </div>
-
-                <button
-                  className="exo__button exo__button--add"
-                  onClick={() => addSection(index)}
-                >
-                  +
-                </button>
-              </>
-            ))}
-          </div>
-        ))}
+          ))}
+        </AnimatePresence>
       </div>
-      <button onClick={addExercice}>Add</button>
+      <button className="button button--new" onClick={addExercice}>
+        +
+      </button>
+
+      <pre
+        style={{
+          width: 400,
+          margin: "auto",
+          position: "absolute",
+          top: 0,
+          left: 0,
+        }}
+      >
+        <code>{JSON.stringify(exos, null, 2)}</code>
+      </pre>
     </div>
   );
 }
