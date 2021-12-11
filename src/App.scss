@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@400;500;700;900&display=swap");
 $theme: #1d1e2c;
 $primary: #13aab3;
-$primary: #fb2d59;
+$primary: #5828da;
 
 $secondary: purple;
 
@@ -64,11 +64,14 @@ $secondary: purple;
       cursor: pointer;
 
       &:last-child {
+        font-family: "Noto Sans";
         font-size: 2em;
+        font-weight: 700;
       }
 
       option {
         padding: 2rem 0;
+
       }
     }
   }
@@ -76,8 +79,8 @@ $secondary: purple;
 
 .exos {
   display: flex;
+  flex-flow: row;
   justify-content: center;
-  flex-wrap: wrap;
   gap: 2rem;
 }
 
@@ -109,11 +112,41 @@ $secondary: purple;
   }
 
   &__sections {
-    margin: 1rem 0;
+    margin-top: 1rem;
+    height: 100%;
   }
   &__section {
+    position: relative;
     display: grid;
-    margin: 0.7rem 0;
+    // margin: 0.7rem 0;
+    cursor: pointer;
+    padding: 1rem 1.5rem;
+    box-sizing: border-box;
+
+    &:hover {
+      background-color: rgba($primary, 0.1);
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    &:active {
+      background-color: rgba($primary, 0.4);
+
+    }
+
+
+    &--active {
+      background-color: rgba($primary, 0.3);
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+      &:hover {
+      background-color: rgba($primary, 0.3);
+      }
+      &:active {
+      background-color: rgba($primary, 0.4);
+
+      }
+    }
 
     &-name {
       display: flex;
@@ -140,6 +173,27 @@ $secondary: purple;
       color: lighten($primary, 10%);
       font-size: 0.9em;
       font-weight: 600;
+    }
+    &-remove {
+      position: absolute;
+      right: 0;
+      top: 0;
+      background-color: #ee4368;
+      color: #fff;
+      // font-size: 1em;
+      // padding: 0.5rem 1rem;
+      width: 20px;
+      height: 20px;
+      height: auto;
+      font-weight: 700;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      box-sizing: border-box;
+
+    
+      &:hover {
+        background-color: darken(#ee4368, 10%);
+      }
     }
   }
 
@@ -286,6 +340,7 @@ $secondary: purple;
     color: rgb(112, 112, 112);
     font-weight: 900;
     transition: 100ms ease-in-out;
+
 
     &:hover {
       background-color: darken(#ee4368, 0%);

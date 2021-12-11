@@ -16,13 +16,29 @@ function App() {
       note: "",
       sections: [
         {
+          id:"328",
           name: "Photos",
           repeat: 3,
           comment: "Dessiner un parapluie",
           time: 90,
         },
         {
-          name: "Photos",
+          id:"329",
+          name: "Daily user",
+          repeat: 3,
+          comment: "Aménager le calendrier",
+          time: 30,
+        },
+        {
+          id:"329",
+          name: "fasrop",
+          repeat: 3,
+          comment: "Aménager le calendrier",
+          time: 30,
+        },
+        {
+          id:"329",
+          name: "cool",
           repeat: 3,
           comment: "Aménager le calendrier",
           time: 30,
@@ -30,13 +46,35 @@ function App() {
       ],
     },
     {
-      title: "Piloche",
-      cardType: "Cours",
+      title: "Wiliamifer",
       type: "",
+      cardType: "Entrainement",
       level: "2",
       rythme: "S",
       note: "",
-      sections: [{ name: "Depoch", repeat: 3, time: 90 }],
+      sections: [
+        {
+          id:"328",
+          name: "Photos",
+          repeat: 3,
+          comment: "Dessiner un parapluie",
+          time: 90,
+        },
+        {
+          id:"329",
+          name: "Daily user",
+          repeat: 3,
+          comment: "Comprendres sans déranger les autres et améliorer",
+          time: 30,
+        },
+        {
+          id:"329",
+          name: "fasrop",
+          repeat: 3,
+          comment: "Aménager le calendrier",
+          time: 30,
+        },
+      ],
     },
   ]);
 
@@ -53,7 +91,6 @@ function App() {
       })
     );
   }
-
 
   // Add Exercice
   function addExercice() {
@@ -84,17 +121,17 @@ function App() {
   function handleAddSection(data: any, index: number) {
     Object.preventExtensions(exos);
     let current = [...exos];
-    current[index].sections.push(data);
+    current[index].sections.push({
+      ...data,
+      id: Math.floor(Math.random() * 1000),
+    });
     setExos(current);
   }
 
   //Remove section from exercice
-  function handleRemoveSection(index: number) {
+  function handleRemoveSection(sectionIndex: any, index:number) {
     let current = [...exos]
-    current[index].sections.slice(0, 1);
-
-    console.log(current)
-
+    current[index].sections.splice(sectionIndex, 1)
     setExos(current)
   }
   return (
@@ -111,7 +148,9 @@ function App() {
               sections={exo.sections}
               handleChange={(e: any) => handleInputChange(e, index)}
               handleSection={(data: any) => handleAddSection(data, index)}
-              removeSection={(indexSection: number) => handleRemoveSection(index)}
+              removeSection={(sectionIndex: React.SyntheticEvent) =>
+                handleRemoveSection(sectionIndex, index)
+              }
               removeExercice={() => removeExercice(index)}
             />
           ))}
@@ -130,7 +169,7 @@ function App() {
           left: 0,
         }}
       >
-        <code>{JSON.stringify(exos, null, 2)}</code>
+        {/* <code>{JSON.stringify(exos, null, 2)}</code> */}
       </pre>
     </div>
   );

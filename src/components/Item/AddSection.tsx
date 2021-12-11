@@ -7,12 +7,16 @@ interface Props {
 }
 
 const AddSection = (props: Props) => {
-  const [hasComment, setHasComment] = useState(false);
   const [state, setState] = useState({});
 
   function handleInputChange(event: any) {
     const value = event.target.value;
     setState({ ...state, [event.target.name]: value });
+  }
+  
+  function handleSubmit(event: React.SyntheticEvent) {
+    props.addSection(state)
+    
   }
 
   return (
@@ -25,7 +29,7 @@ const AddSection = (props: Props) => {
       <input
         name="name"
         type="text"
-        placeholder="Name"
+        placeholder="Name*"
         onChange={handleInputChange}
         required
       />
@@ -33,7 +37,7 @@ const AddSection = (props: Props) => {
         name="repeat"
         type="number"
         min={0}
-        placeholder="Nombre"
+        placeholder="Repeat*"
         onChange={handleInputChange}
         required
       />

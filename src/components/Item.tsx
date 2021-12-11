@@ -22,13 +22,12 @@ const Item = (props: Props) => {
 
   // Additione le temps de chaque section
   function renderTime(arr: any) {
+    console.log(arr)
     return arr.reduce((acc: any, object: any) => acc + object.time, 0);
   }
 
   React.useEffect(() => {
-    function renderTime(arr: any) {
-      return arr.reduce((acc: any, object: any) => acc + object.time, 0);
-    }
+
   }, [props.sections]);
 
   return (
@@ -52,7 +51,7 @@ const Item = (props: Props) => {
             className="exo__index"
             type="text"
             name="cardType"
-            placeholder="Type"
+            placeholder="Card Type"
             onChange={props.handleChange}
             value={props.cardType}
           />
@@ -68,11 +67,13 @@ const Item = (props: Props) => {
           onChange={props.handleChange}
         />
         <Grid handleChange={props.handleChange} />
+        </div>
         <div className="exo__sections">
           <AnimatePresence>
             {props.sections.map((section: any, i: number) => (
               <ItemSection
                 key={i}
+                sectionIndex={i}
                 name={section.name}
                 repeat={section.repeat}
                 comment={section.comment}
@@ -82,7 +83,6 @@ const Item = (props: Props) => {
             ))}
           </AnimatePresence>
         </div>
-      </div>
       <div className="exo__footer">
         <button
           className="button button--section"
