@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { format } from "date-fns";
 
 import Grid from "./Grid";
 import ItemSection from "./Item/ItemSection";
@@ -22,19 +23,36 @@ const Item = (props: Props) => {
 
   // Additione le temps de chaque section
   function renderTime(arr: any) {
-    console.log(arr)
-    return arr.reduce((acc: any, object: any) => acc + object.time, 0);
+    const result = arr.reduce(
+      (acc: any, object: any) => acc + object.time * object.repeat,
+      0
+    );
+
+    if (result < 60) {
+      return Math.round(result) + " min";
+    } else {
+      return Math.round(result / 60) + " h";
+    }
   }
 
-  React.useEffect(() => {
+  console.log(renderTime(props.sections));
 
-  }, [props.sections]);
+  function formatTime(seconds: number) {
+    new Date(seconds * 1000).toLocaleTimeString("fr-FR", {
+      timeZone: "ETC/UTC",
+      hour12: false,
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+  }
+
+  // React.useEffect(() => {}, [props.sections]);
 
   return (
     <motion.div
       initial={{ x: 200, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      exit={{ y: -200, opacity: 0 }}
       transition={{ stiffness: 10, duration: 0.2 }}
       className="exo"
     >
@@ -46,7 +64,7 @@ const Item = (props: Props) => {
           -
         </button>
         <div className="exo__header">
-          <span className="exo__time">⏱️ {renderTime(props.sections)} min</span>
+          <span className="exo__time">⏱️ {renderTime(props.sections)}</span>
           <input
             className="exo__index"
             type="text"
@@ -67,28 +85,28 @@ const Item = (props: Props) => {
           onChange={props.handleChange}
         />
         <Grid handleChange={props.handleChange} />
-        </div>
-        <div className="exo__sections">
-          <AnimatePresence>
-            {props.sections.map((section: any, i: number) => (
-              <ItemSection
-                key={i}
-                sectionIndex={i}
-                name={section.name}
-                repeat={section.repeat}
-                comment={section.comment}
-                time={section.time}
-                removeSection={props.removeSection}
-              />
-            ))}
-          </AnimatePresence>
-        </div>
+      </div>
+      <div className="exo__sections">
+        <AnimatePresence>
+          {props.sections.map((section: any, i: number) => (
+            <ItemSection
+              key={i}
+              sectionIndex={i}
+              name={section.name}
+              repeat={section.repeat}
+              comment={section.comment}
+              time={section.time}
+              removeSection={props.removeSection}
+            />
+          ))}
+        </AnimatePresence>
+      </div>
       <div className="exo__footer">
         <button
           className="button button--section"
           onClick={() => setIsActive(!isActive)}
         >
-          Add new
+          +
         </button>
         <AnimatePresence>
           {isActive && (

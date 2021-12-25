@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
 interface Props {
@@ -9,14 +9,21 @@ interface Props {
 const AddSection = (props: Props) => {
   const [state, setState] = useState({});
 
+  useEffect(() => {
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        props.addSection(state)
+      }
+    });
+  }, [state]);
+
   function handleInputChange(event: any) {
     const value = event.target.value;
     setState({ ...state, [event.target.name]: value });
   }
-  
+
   function handleSubmit(event: React.SyntheticEvent) {
-    props.addSection(state)
-    
+    props.addSection(state);
   }
 
   return (

@@ -1,7 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { produce } from "immer";
 import { AnimatePresence } from "framer-motion";
+import { FaGithubSquare } from "react-icons/fa";
+import { MdOutlineLibraryAdd } from "react-icons/md";
 
+import DomToImage from "dom-to-image";
+
+import Header from "./components/Header"
+import Empty from "./components/Empty";
 import Item from "./components/Item";
 import "./App.scss";
 
@@ -16,28 +22,28 @@ function App() {
       note: "",
       sections: [
         {
-          id:"328",
+          id: "328",
           name: "Photos",
           repeat: 3,
           comment: "Dessiner un parapluie",
           time: 90,
         },
         {
-          id:"329",
+          id: "329",
           name: "Daily user",
           repeat: 3,
           comment: "Aménager le calendrier",
           time: 30,
         },
         {
-          id:"329",
+          id: "329",
           name: "fasrop",
           repeat: 3,
           comment: "Aménager le calendrier",
           time: 30,
         },
         {
-          id:"329",
+          id: "329",
           name: "cool",
           repeat: 3,
           comment: "Aménager le calendrier",
@@ -54,21 +60,21 @@ function App() {
       note: "",
       sections: [
         {
-          id:"328",
+          id: "328",
           name: "Photos",
           repeat: 3,
           comment: "Dessiner un parapluie",
           time: 90,
         },
         {
-          id:"329",
+          id: "329",
           name: "Daily user",
           repeat: 3,
           comment: "Comprendres sans déranger les autres et améliorer",
           time: 30,
         },
         {
-          id:"329",
+          id: "329",
           name: "fasrop",
           repeat: 3,
           comment: "Aménager le calendrier",
@@ -78,7 +84,15 @@ function App() {
     },
   ]);
 
-  // Handle input to ge ta simple string
+  const AppElement = useRef<HTMLDivElement>(null);
+
+  function screenshotMyScreen() {
+    const element = document.getElementById("App");
+  }
+
+  // console.log(AppElement.current)
+
+  // Handle input to get a simple string
   function handleInputChange(
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     index: number
@@ -92,7 +106,7 @@ function App() {
     );
   }
 
-  // Add Exercice
+  // Add new exercice to the list
   function addExercice() {
     if (exos.length >= 10) {
       alert("You can only have tree exercices");
@@ -129,38 +143,50 @@ function App() {
   }
 
   //Remove section from exercice
-  function handleRemoveSection(sectionIndex: any, index:number) {
-    let current = [...exos]
-    current[index].sections.splice(sectionIndex, 1)
-    setExos(current)
+  function handleRemoveSection(sectionIndex: any, index: number) {
+    let current = [...exos];
+    current[index].sections.splice(sectionIndex, 1);
+    setExos(current);
   }
+  
   return (
-    <div className="App">
-      <div className="exos">
-        <AnimatePresence>
-          {exos.map((exo: any, index: number) => (
-            <Item
-              key={index}
-              index={index}
-              title={exo.title}
-              cardType={exo.cardType}
-              time={exo.time}
-              sections={exo.sections}
-              handleChange={(e: any) => handleInputChange(e, index)}
-              handleSection={(data: any) => handleAddSection(data, index)}
-              removeSection={(sectionIndex: React.SyntheticEvent) =>
-                handleRemoveSection(sectionIndex, index)
-              }
-              removeExercice={() => removeExercice(index)}
-            />
-          ))}
-        </AnimatePresence>
-      </div>
-      <button className="button button--new" onClick={addExercice}>
-        +
-      </button>
+    <div className="App" id="App" ref={AppElement}>
+      <Header total={exos.length&}/>
+      {exos.length <= 0 ? (
+        <Empty />
+      ) : (
+        <div className="exos">
+          <AnimatePresence>
+            {exos.map((exo: any, index: number) => (
+              <Item
+                key={index}
+                index={index}
+                title={exo.title}
+                cardType={exo.cardType}
+                time={exo.time}
+                sections={exo.sections}
+                handleChange={(e: any) => handleInputChange(e, index)}
+                handleSection={(data: any) => handleAddSection(data, index)}
+                removeSection={(sectionIndex: React.SyntheticEvent) =>
+                  handleRemoveSection(sectionIndex, index)
+                }
+                removeExercice={() => removeExercice(index)}
+              />
+            ))}
+          </AnimatePresence>
+        </div>
+      )}
 
-      <pre
+      <div className="controls">
+        <button className="button button--new" onClick={addExercice}>
+          <MdOutlineLibraryAdd scale={1.2} />
+        </button>
+        <button className="button button--default" onClick={screenshotMyScreen}>
+          Save as JPG
+        </button>
+      </div>
+
+      {/* <pre
         style={{
           width: 400,
           margin: "auto",
@@ -169,8 +195,8 @@ function App() {
           left: 0,
         }}
       >
-        {/* <code>{JSON.stringify(exos, null, 2)}</code> */}
-      </pre>
+        <code>{JSON.stringify(exos, null, 2)}</code>
+      </pre> */}
     </div>
   );
 }
