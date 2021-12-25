@@ -151,7 +151,7 @@ function App() {
   
   return (
     <div className="App" id="App" ref={AppElement}>
-      <Header total={exos.length&}/>
+      <Header total={exos.length}/>
       {exos.length <= 0 ? (
         <Empty />
       ) : (
