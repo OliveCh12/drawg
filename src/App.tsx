@@ -4,93 +4,39 @@ import { AnimatePresence } from "framer-motion";
 import { FaGithubSquare } from "react-icons/fa";
 import { MdOutlineLibraryAdd } from "react-icons/md";
 
-import DomToImage from "dom-to-image";
+import html2canvas from "html2canvas";
 
-import Header from "./components/Header"
+import Header from "./components/Header";
 import Empty from "./components/Empty";
 import Item from "./components/Item";
 import "./App.scss";
 
 function App() {
-  const [exos, setExos] = useState([
-    {
-      title: "Spantin",
-      type: "",
-      cardType: "Exos",
-      level: "2",
-      rythme: "S",
-      note: "",
-      sections: [
-        {
-          id: "328",
-          name: "Photos",
-          repeat: 3,
-          comment: "Dessiner un parapluie",
-          time: 90,
-        },
-        {
-          id: "329",
-          name: "Daily user",
-          repeat: 3,
-          comment: "Aménager le calendrier",
-          time: 30,
-        },
-        {
-          id: "329",
-          name: "fasrop",
-          repeat: 3,
-          comment: "Aménager le calendrier",
-          time: 30,
-        },
-        {
-          id: "329",
-          name: "cool",
-          repeat: 3,
-          comment: "Aménager le calendrier",
-          time: 30,
-        },
-      ],
-    },
-    {
-      title: "Wiliamifer",
-      type: "",
-      cardType: "Entrainement",
-      level: "2",
-      rythme: "S",
-      note: "",
-      sections: [
-        {
-          id: "328",
-          name: "Photos",
-          repeat: 3,
-          comment: "Dessiner un parapluie",
-          time: 90,
-        },
-        {
-          id: "329",
-          name: "Daily user",
-          repeat: 3,
-          comment: "Comprendres sans déranger les autres et améliorer",
-          time: 30,
-        },
-        {
-          id: "329",
-          name: "fasrop",
-          repeat: 3,
-          comment: "Aménager le calendrier",
-          time: 30,
-        },
-      ],
-    },
-  ]);
+  const [exos, setExos]: any = useState([]);
 
   const AppElement = useRef<HTMLDivElement>(null);
 
-  function screenshotMyScreen() {
-    const element = document.getElementById("App");
-  }
+  const DownloadLink = useRef<HTMLAnchorElement>(null);
 
-  // console.log(AppElement.current)
+  // Take a screenshot of a specific area of the DOM.
+  async function screenshotDOM() {
+    const element: any = await document.querySelector(".exos");
+    const elementFooter: any = await document.querySelectorAll(".exo__footer");
+
+    await elementFooter.forEach((element: any) => {
+      element.style = "display: none";
+    });
+
+    await html2canvas(element, {
+      windowWidth: element.offsetWidth,
+      windowHeight: 1080,
+      foreignObjectRendering: false,
+    })?.then(function (canvas) {
+      document.body.appendChild(canvas);
+
+      // DownloadLink.current?.setAttribute("href", canvas.toDataURL("image/png"));
+    });
+  }
 
   // Handle input to get a simple string
   function handleInputChange(
@@ -99,7 +45,7 @@ function App() {
   ): void {
     let field = event.target.name;
 
-    setExos((currentExos) =>
+    setExos((currentExos: any) =>
       produce(currentExos, (v: any) => {
         v[index][field] = event.target.value;
       })
@@ -131,14 +77,27 @@ function App() {
     setExos(exos.slice(0, index).concat(exos.slice(index + 1, exos.length)));
   }
 
+  interface elementProps {
+    title: string;
+    cardType: string;
+    type: string;
+    level: string;
+    rythme: string;
+    note: string;
+    sections: [];
+  }
+
   // Add new section to exercice
-  function handleAddSection(data: any, index: number) {
-    Object.preventExtensions(exos);
-    let current = [...exos];
-    current[index].sections.push({
-      ...data,
-      id: Math.floor(Math.random() * 1000),
-    });
+  function handleAddSection(newSection: any, index: number) {
+    let current: Array<any> = [...exos];
+
+    let { sections } = current[index];
+
+    // sections = Object.assign([], current)
+    sections.push(newSection)
+
+    console.log(sections)
+
     setExos(current);
   }
 
@@ -148,10 +107,14 @@ function App() {
     current[index].sections.splice(sectionIndex, 1);
     setExos(current);
   }
-  
+
+  function getProps({ active }: any) {
+    console.log(active);
+  }
+
   return (
     <div className="App" id="App" ref={AppElement}>
-      <Header total={exos.length}/>
+      <Header total={exos.length} />
       {exos.length <= 0 ? (
         <Empty />
       ) : (
@@ -171,6 +134,7 @@ function App() {
                   handleRemoveSection(sectionIndex, index)
                 }
                 removeExercice={() => removeExercice(index)}
+                isActive={true}
               />
             ))}
           </AnimatePresence>
@@ -181,12 +145,20 @@ function App() {
         <button className="button button--new" onClick={addExercice}>
           <MdOutlineLibraryAdd scale={1.2} />
         </button>
-        <button className="button button--default" onClick={screenshotMyScreen}>
+        <button className="button button--default" onClick={screenshotDOM}>
           Save as JPG
         </button>
+        <a
+          className="button button--default"
+          ref={DownloadLink}
+          onClick={screenshotDOM}
+          download={true}
+        >
+          Download
+        </a>
       </div>
 
-      {/* <pre
+      <pre
         style={{
           width: 400,
           margin: "auto",
@@ -196,7 +168,7 @@ function App() {
         }}
       >
         <code>{JSON.stringify(exos, null, 2)}</code>
-      </pre> */}
+      </pre>
     </div>
   );
 }

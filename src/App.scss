@@ -3,10 +3,10 @@ $theme: #1d1e24;
 $primary: #13aab3;
 
 $primary: #744de0;
-$primary: #5a3dfd;
+$primary: #03c5ccec;
 
 $secondary: purple;
-$dark:$theme
+$dark:$theme;
 
 :root {
   --main-color: $primary;
@@ -25,6 +25,8 @@ $dark:$theme
 }
 
 .header {
+  font-family: "JetBrains Mono";
+
   height: 70px;
   display: flex;
   justify-content: space-between;
@@ -82,6 +84,9 @@ $dark:$theme
   justify-content: center;
   align-items: center;
   flex: 1;
+  font-family: "JetBrains Mono";
+  font-size: 0.9em;
+  font-weight: 200;
 
 
   @media (prefers-color-scheme: dark) {
@@ -140,6 +145,10 @@ $dark:$theme
       background-color: rgba(0, 0, 0, 0.1);
     }
 
+    &--empty {
+      background-color: $primary;
+    }
+
     select {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -177,13 +186,16 @@ $dark:$theme
   gap: 2rem;
   flex: 1 1;
   margin: 1rem 0;
+  padding: 2rem;
   overflow: auto;
 }
 
 .exo {
+  font-family: "JetBrains Mono";
+
   position: relative;
   width: 250px;
-  // height: fit-content;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -208,8 +220,7 @@ $dark:$theme
     display: grid;
     grid-template-rows: auto;
   }
-  &__footer {
-  }
+
   &__time {
     font-weight: 700;
   }
@@ -256,8 +267,9 @@ $dark:$theme
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 1em;
+      font-size: 0.85em;
       font-weight: 700;
+      margin-bottom: 0.4rem;
 
       &::before {
         content: "□";
@@ -272,6 +284,7 @@ $dark:$theme
     }
     &-comment {
       opacity: 0.6;
+      font-size: 0.8em;
     }
     &-time {
       color: lighten($primary, 10%);
@@ -304,6 +317,8 @@ $dark:$theme
     margin-top: 1rem;
     font-size: 0.9em;
     font-weight: 600;
+    font-family: "JetBrains Mono";
+
     border: none;
     outline: none;
     background-color: transparent;
@@ -319,7 +334,8 @@ $dark:$theme
     font-weight: 900;
     font-size: 1.1em;
     margin: 1rem 0;
-    text-transform: uppercase;
+    text-transform: uppercase !important;
+    font-family: "JetBrains Mono";
     color: $primary;
     background-color: transparent;
   }
@@ -341,9 +357,12 @@ $dark:$theme
       outline: none;
       padding: 0.5rem 0.5rem;
       border: 1px solid rgba(0, 0, 0, 0.1);
+  font-family: "JetBrains Mono";
+  font-size: 0.8em;
+
 
       &:focus {
-        border: 1px solid $primary;
+        border: 2px solid $primary;
       }
     }
 
@@ -366,13 +385,15 @@ $dark:$theme
   outline: none;
   cursor: pointer;
   color: #fff;
-  font-family: "Work Sans", sans-serif;
   border: 0.5px solid rgba(0, 0, 0, 0.1);
+  text-decoration: none;
   padding: 0.5rem 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointers;
+  font-family: "JetBrains Mono";
+
 
   &--default {
     background-color: rgb(47, 47, 47);
@@ -431,7 +452,8 @@ $dark:$theme
 
   &--section {
     background-color: $primary;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 1.2em;
     transition: 50ms ease-in-out;
     width: 100%;
 

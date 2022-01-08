@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect, useCallback } from "react";
 
 interface Props {
   onChange: any;
@@ -9,12 +8,23 @@ interface Props {
 const AddSection = (props: Props) => {
   const [state, setState] = useState({});
 
-  useEffect(() => {
-    window.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") {
-        props.addSection(state)
+  // If User press enter key, useCallback into Listener
+  const handleUserKeyPress = useCallback(
+    (event: any) => {
+      const { key } = event;
+
+      if (key === "Enter") {
+        props.addSection(state);
       }
-    });
+    },
+    [state]
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleUserKeyPress);
+    return () => {
+      window.removeEventListener("keydown", handleUserKeyPress);
+    };
   }, [state]);
 
   function handleInputChange(event: any) {
@@ -22,17 +32,8 @@ const AddSection = (props: Props) => {
     setState({ ...state, [event.target.name]: value });
   }
 
-  function handleSubmit(event: React.SyntheticEvent) {
-    props.addSection(state);
-  }
-
   return (
-    <motion.div
-      className="exo__inputs"
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      exit={{ y: -100, opacity: 0 }}
-    >
+    <div className="exo__inputs">
       <input
         name="name"
         type="text"
@@ -68,9 +69,9 @@ const AddSection = (props: Props) => {
         className="button button--add"
         onClick={() => props.addSection(state)}
       >
-        Add
+        Add Section
       </button>
-    </motion.div>
+    </div>
   );
 };
 

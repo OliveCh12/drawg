@@ -16,6 +16,7 @@ interface Props {
   handleSection: any;
   removeSection: any;
   removeExercice: any;
+  isActive?: boolean;
 }
 
 const Item = (props: Props) => {
@@ -29,22 +30,30 @@ const Item = (props: Props) => {
     );
 
     if (result < 60) {
-      return Math.round(result) + " min";
+      return result + " min";
     } else {
-      return Math.round(result / 60) + " h";
+      return result / 60 + " h";
     }
   }
 
-  console.log(renderTime(props.sections));
+  // function checkItemIndex(index: number) {
+  //   console.log(index)
 
-  function formatTime(seconds: number) {
-    new Date(seconds * 1000).toLocaleTimeString("fr-FR", {
-      timeZone: "ETC/UTC",
-      hour12: false,
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
+  //   if (index === props.index) {
+  //     setIsActive(!isActive)
+  //   } else {
+  //     setIsActive(false)
+  //   }
+  // }
+
+  React.useEffect(() => {
+    console.log(props.index)
+    // return () => {
+    // }
+  }, [])
+
+  function setItemActive(itemState: boolean) {
+    setIsActive(itemState)
   }
 
   // React.useEffect(() => {}, [props.sections]);
@@ -104,13 +113,14 @@ const Item = (props: Props) => {
       <div className="exo__footer">
         <button
           className="button button--section"
-          onClick={() => setIsActive(!isActive)}
+          onClick={() => setItemActive(!isActive)}
         >
           +
         </button>
         <AnimatePresence>
           {isActive && (
             <AddSection
+              // targetItem={props.index}
               onChange={props.handleChange}
               addSection={props.handleSection}
             />
