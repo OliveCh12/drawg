@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import { produce } from "immer";
 import { AnimatePresence } from "framer-motion";
-import { FaGithubSquare } from "react-icons/fa";
 import { MdOutlineLibraryAdd } from "react-icons/md";
 
 import html2canvas from "html2canvas";
@@ -77,28 +76,11 @@ function App() {
     setExos(exos.slice(0, index).concat(exos.slice(index + 1, exos.length)));
   }
 
-  interface elementProps {
-    title: string;
-    cardType: string;
-    type: string;
-    level: string;
-    rythme: string;
-    note: string;
-    sections: [];
-  }
-
   // Add new section to exercice
   function handleAddSection(newSection: any, index: number) {
-    let current: Array<any> = [...exos];
-
-    let { sections } = current[index];
-
-    // sections = Object.assign([], current)
-    sections.push(newSection)
-
-    console.log(sections)
-
-    setExos(current);
+    let initialExos = [...exos]
+    initialExos[index].sections.push(newSection)
+    setExos(initialExos)
   }
 
   //Remove section from exercice
@@ -106,10 +88,6 @@ function App() {
     let current = [...exos];
     current[index].sections.splice(sectionIndex, 1);
     setExos(current);
-  }
-
-  function getProps({ active }: any) {
-    console.log(active);
   }
 
   return (
@@ -145,19 +123,17 @@ function App() {
         <button className="button button--new" onClick={addExercice}>
           <MdOutlineLibraryAdd scale={1.2} />
         </button>
-        <button className="button button--default" onClick={screenshotDOM}>
-          Save as JPG
-        </button>
         <a
           className="button button--default"
           ref={DownloadLink}
           onClick={screenshotDOM}
           download={true}
+          href="/"
         >
-          Download
+          Download PNG
         </a>
       </div>
-
+{/* 
       <pre
         style={{
           width: 400,
@@ -168,7 +144,7 @@ function App() {
         }}
       >
         <code>{JSON.stringify(exos, null, 2)}</code>
-      </pre>
+      </pre> */}
     </div>
   );
 }

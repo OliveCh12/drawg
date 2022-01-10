@@ -19,9 +19,9 @@ const Header = (props: Props) => {
         <small>Total : {props.total}</small>
       </span>
       <div className="header__links-group">
-        <a href="#">About</a>
-        <a href="https://github.com/OliveCh12/drawg" target={"_blank"}>
-          <FaGithubSquare />
+        {/* <a href="">About</a> */}
+        <a href="https://github.com/OliveCh12/drawg" target={"_blank"} rel="noreferrer">
+          <FaGithubSquare size={20}/>
         </a>
       </div>
     </header>

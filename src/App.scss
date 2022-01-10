@@ -3,7 +3,7 @@ $theme: #1d1e24;
 $primary: #13aab3;
 
 $primary: #744de0;
-$primary: #03c5ccec;
+$primary: #fb1c54ec;
 
 $secondary: purple;
 $dark:$theme;
@@ -26,14 +26,13 @@ $dark:$theme;
 
 .header {
   font-family: "JetBrains Mono";
-
   height: 70px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: $primary;
   border-bottom: 1px solid rgba(black, 0.1);
-  font-size: 1.3em;
+  font-size: 1em;
   color: #fff;
   font-weight: 500;
   padding: 0 2rem;
@@ -393,6 +392,7 @@ $dark:$theme;
   justify-content: center;
   cursor: pointers;
   font-family: "JetBrains Mono";
+  font-size: 1em;
 
 
   &--default {
@@ -427,6 +427,7 @@ $dark:$theme;
   &--add {
     background-color: $primary;
     transition: 100ms ease-in-out;
+    font-size: 0.8em;
 
     &:hover {
       background-color: darken($primary, 5%);

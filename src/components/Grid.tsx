@@ -5,10 +5,6 @@ interface Props {
 }
 
 const Grid = (props: Props) => {
-
-  const [state, setstate] = React.useState("")
-
-
   return (
     <div className="grid">
       <div className="grid__cell">
@@ -20,7 +16,7 @@ const Grid = (props: Props) => {
           <option value="△/□">△/□</option>
         </select>
       </div>
-      <div className={`grid__cell ${state === "" ? "grid__cell--empty" : null}`}>
+      <div className={`grid__cell`}>
         <select name="note" disabled={false} onChange={props.handleChange}>
           <option value="" className="empty"></option>
           <option value="🐲">🐲</option>

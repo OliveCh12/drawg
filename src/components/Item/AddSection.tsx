@@ -5,8 +5,22 @@ interface Props {
   addSection: any;
 }
 
+interface StateProps {
+  name: string;
+  repeat: number;
+  time: number;
+  comment: string;
+}
+
 const AddSection = (props: Props) => {
-  const [state, setState] = useState({});
+  // State of AddSection component.
+  const [state, setState] = useState<StateProps | any>({
+    name: "",
+    repeat: "",
+    time: "",
+    comment: "",
+  });
+
 
   // If User press enter key, useCallback into Listener
   const handleUserKeyPress = useCallback(
@@ -14,10 +28,22 @@ const AddSection = (props: Props) => {
       const { key } = event;
 
       if (key === "Enter") {
+      event.preventDefault()
+
         props.addSection(state);
+        // Clear state data
+        const clearState = Object.fromEntries(
+          Object.keys(state).map((key) => [key, ""])
+        );
+        setState(clearState);
+
+        const firstInput: HTMLInputElement | null = document.querySelector("input[name='name']")
+
+        firstInput?.focus()
+        
       }
     },
-    [state]
+    [state, props]
   );
 
   useEffect(() => {
@@ -25,7 +51,7 @@ const AddSection = (props: Props) => {
     return () => {
       window.removeEventListener("keydown", handleUserKeyPress);
     };
-  }, [state]);
+  }, [state, handleUserKeyPress]);
 
   function handleInputChange(event: any) {
     const value = event.target.value;
@@ -39,6 +65,7 @@ const AddSection = (props: Props) => {
         type="text"
         placeholder="Name*"
         onChange={handleInputChange}
+        value={state["name"]}
         required
       />
       <input
@@ -47,6 +74,7 @@ const AddSection = (props: Props) => {
         min={0}
         placeholder="Repeat*"
         onChange={handleInputChange}
+        value={state["repeat"]}
         required
       />
 
@@ -56,6 +84,7 @@ const AddSection = (props: Props) => {
         min={0}
         placeholder="30 min"
         onChange={handleInputChange}
+        value={state["time"]}
         required
       />
       <input
@@ -63,6 +92,7 @@ const AddSection = (props: Props) => {
         type="text"
         placeholder="Comment"
         onChange={handleInputChange}
+        value={state["comment"]}
       />
       <button
         type="submit"

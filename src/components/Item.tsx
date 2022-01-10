@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { format } from "date-fns";
 
 import Grid from "./Grid";
 import ItemSection from "./Item/ItemSection";
@@ -46,17 +45,10 @@ const Item = (props: Props) => {
   //   }
   // }
 
-  React.useEffect(() => {
-    console.log(props.index)
-    // return () => {
-    // }
-  }, [])
-
   function setItemActive(itemState: boolean) {
     setIsActive(itemState)
   }
 
-  // React.useEffect(() => {}, [props.sections]);
 
   return (
     <motion.div
